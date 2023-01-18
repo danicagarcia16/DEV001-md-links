@@ -1,19 +1,29 @@
 const fs = require('fs');
-const mdLinks = (path, options) =>{
-    return new Promise((resolve, reject) => {
-        //Ingresó el path o ruta
-        //verificar si existe la ruta o ptah
-        if (fs.existSync(path)) {
-           
-          } else {
-            reject(new Error("La ruta no existe"));
-          } 
-      
-    });
+const { extractlinks, validateLink } = require('./api');
+//Creación de archios
+
+fs.writeFile('./colores.txt', 'verde\namarillo\nazul\nrojo', error => {
+  if(error) {
+    console.log(error);
+  }
+  else {
+    console.log('se creo el archivo');
+  }
+});
 
 
- 
-}
-module.exports =  {
-mdLinks
+const mdLinks = (route, option) => {
+  return new Promise((resolve, reject) => {
+      if (option.validate === false || option.validate === undefined) {
+          //resolve(extractlinks(route));
+      } else if (option.validate === true) {
+         // resolve(validateLink(route));
+      } else {
+          reject('error')
+      }
+  })
+};
+
+module.exports = {
+  mdLinks,
 };
