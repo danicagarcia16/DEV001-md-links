@@ -15,9 +15,9 @@ fs.writeFile('./colores.txt', 'verde\namarillo\nazul\nrojo', error => {
 const mdLinks = (route, option) => {
   return new Promise((resolve, reject) => {
       if (option.validate === false || option.validate === undefined) {
-          //resolve(extractlinks(route));
+          resolve(extractlinks(route));
       } else if (option.validate === true) {
-         // resolve(validateLink(route));
+         resolve(validateLink(route));
       } else {
           reject('error')
       }

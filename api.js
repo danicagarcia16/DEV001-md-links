@@ -41,7 +41,7 @@ console.log(newPath2)
      const route = isAbsolute(p);
      if (fs.statSync(route).isDirectory()) {
          fs.readdirSync(route).forEach(file => {
-             const files = getLinklMD(path.join(route, file))
+             const files = getLinklMD(path.join(route, file))//une los segmentos de ruta especificados en una sola ruta.
              AllFiles = AllFiles.concat(files) //El método concat() se usa para unir dos o más arrays. Este método no cambia los arrays existentes, sino que devuelve un nuevo array.
          })
      } else {
@@ -54,3 +54,77 @@ console.log(newPath2)
  
  console.log(getLinklMD('prueba'));
 //-------------------------------PASO 2 : PARA EXTRAER LINKS------------------------------
+const extractlinks = (route) => {
+    const mdFiles = getLinklMD(route);
+    console.log(mdFiles)
+    //Creo una variable donde almacenaré el array de objetos con las 3 propiedades
+    const arrayObjectMD = []
+    mdFiles.forEach(file => {
+        console.log(file)
+        readmdFiles = fs.readFileSync(file, 'utf8') //readFileSync se utiliza para leer el archivo y devolver su contenido,La codificación predeterminada es utf8
+            console.log(readmdFiles)
+
+        const regexMdLinks = /\[([^\[]+)\](\(.*\))/gm
+        const matches = readmdFiles.match(regexMdLinks)
+             console.log('links', matches)
+        const singleMatch = /\[([^\[]+)\]\((.*)\)/
+        for (let i = 0; i < matches.length; i++) {
+            let md = singleMatch.exec(matches[i]) //El método exec() ejecuta una busqueda sobre las coincidencias de una expresión regular en una cadena especifica. Devuelve el resultado como array, o null
+            const href = `${md[2]}`
+            const text = `${md[1]}`
+            arrayObjectMD.push({
+                href: href,
+                text: text,
+                file: file,
+            })
+        }
+    })
+    return arrayObjectMD
+}
+  console.log(extractlinks('prueba'))
+  const fetch = require('node-fetch');
+
+const validateLink = (route) => {
+        //1.crear un nuevo array y añadir los nuevos status y messager
+        const promiseFetch = [];
+        const link = extractlinks(route);
+        //2.recorrer el array
+        link.forEach(element => {
+            //3.hacer petición fecth con la propiedad element.href por cada elemento del array
+            promiseFetch.push(fetch(element.href)
+                .then(function(response) {
+                    return {
+                        href: element.href,
+                        text: element.text,
+                        file: element.file,
+                        status: response.status,
+                        statusText: response.statusText,
+                    }
+                })
+                .catch(function() {
+                    return {
+                        href: element.href,
+                        text: element.text,
+                        file: element.file,
+                        status: 'error',
+                        statusText: 'FAIL',
+                    }
+                })
+            )
+        })
+        return Promise.all(promiseFetch);
+    }
+    console.log(validateLink('prueba'))
+    //-------------------------------------PASO 4:CASO --stats----------------------------------------------
+
+   
+
+
+module.exports = {
+    isAbsolute,
+    getLinklMD,
+    extractlinks,
+    validateLink,
+    newPath1,
+    newPath2,
+};
