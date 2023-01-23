@@ -8,7 +8,7 @@ console.log(
     )
 );
 let fs = require('fs');
-//--------------------------Mis rutas para pruebas-----------------------------------
+//--------------------------Mis rutas -----------------------------------
 //Mi ruta absoluta
 const pathSlash1 = 'C:\laboratoria Danica\DEV001-md-links'
 const newPath1 = pathSlash1.replace(/\\\//g, ".") 
@@ -18,6 +18,7 @@ console.log(newPath1)
 const pathSlash2 = '.\\README.md'
 const newPath2 = pathSlash2.replace(/\\\//g, ".") 
 console.log(newPath2)
+
 //---------------------------PASO I: PARA TRAER LINKS---------------------------------
 
 /*I.¿LA RUTA ES ABSOLUTA?.- en la función isAbsolute uso el operador ternario cuya condición es path.isAbsolute(p)
@@ -37,19 +38,20 @@ console.log(newPath2)
  */
  
  const getLinklMD = (p) => {
-     let AllFiles = []; // creo un variable que será de tipo array donde almacenaré todos los archivos MD
+     let AllFilesmd = []; // creo un variable que será de tipo array donde almacenaré todos los archivos MD
      const route = isAbsolute(p);
      if (fs.statSync(route).isDirectory()) {
          fs.readdirSync(route).forEach(file => {
-             const files = getLinklMD(path.join(route, file))//une los segmentos de ruta especificados en una sola ruta.
-             AllFiles = AllFiles.concat(files) //El método concat() se usa para unir dos o más arrays. Este método no cambia los arrays existentes, sino que devuelve un nuevo array.
+             const files = getLinklMD(path.join(route, file))
+             //une los segmentos de ruta especificados en una sola ruta.
+             AllFilesmd = AllFilesmd.concat(files) //El método concat() se usa para unir dos o más arrays. Este método no cambia los arrays existentes, sino que devuelve un nuevo array.
          })
      } else {
          if (path.parse(route).ext === '.md') { //El método path.parse () devuelve un objeto cuyas propiedades representan elementos significativos de la ruta.
              AllFiles.push(route);
          }
      }
-     return AllFiles
+     return AllFilesmd
  }
  
  console.log(getLinklMD('prueba'));
