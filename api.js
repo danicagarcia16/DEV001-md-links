@@ -102,7 +102,7 @@ const validateLink = (route) => {
         const promiseFetch = [];
         const link = extractlinks(route);
         //2.recorrer el array
-        link.forEach(element => {
+        link.map(element => {
             //3.hacer petición fecth con la propiedad element.href por cada elemento del array
             promiseFetch.push(fetch(element.href)
                 .then(function(rest) {
@@ -127,7 +127,40 @@ const validateLink = (route) => {
         })
         return Promise.all(promiseFetch);
     }
-    console.log(validateLink('prueba'))
+    console.log(validateLink([{
+        href: 'https://comidasperuanas.net/wp-content/uploads/2020/12/Aguajina.webp',
+        text: 'aguajina',
+        file: 'C:\\laboratoria Danica\\DEV001-md-links\\prueba\\prueba2\\refrescos.md',
+        status: 200,
+        message: 'ok'
+      }]));
+    /*const validateLink = (route) => {
+        const promiseFetch = route.map((link) => {
+         return fetch(link.href)
+            .then((rest) => {
+              const statusData = {
+                href: link.href,
+                file: link.file,
+                status: rest.status,
+                message:
+                  rest.status > 199 && rest.status < 400 ? "OK" : "Fail",
+                text: link.text,
+              };
+              return statusData;
+            }).catch((error) => {
+              const statusDataErr = {
+                href: link.href,
+                file: link.file,
+                status: `Fail ${error.message}`,
+                message: "No status",
+                text: link.text
+              };
+              return statusDataErr;
+            });
+          }); 
+          return Promise.all(promiseFetch);
+      };
+      console.log(validateLink('prueba'))*/
   
 //-------------------------------------PASO 4:CASO --stats----------------------------------------------
 /*//Crear una función 
