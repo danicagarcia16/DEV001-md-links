@@ -2,14 +2,15 @@ const fs = require('fs');
 const { extractlinks, validateLink } = require('./api');
 //Creación de archios
 
-fs.writeFile('./colores.txt', 'verde\namarillo\nazul\nrojo', error => {
+/*fs.writeFile('./colores.txt', 'verde\namarillo\nazul\nrojo', error => {
   if(error) {
     console.log(error);
   }
   else {
-    console.log('se creo el archivo');
+   // console.log('se creo el archivo');
   }
-});
+});*/
+
 
 
 const mdLinks = (route, option) => {
