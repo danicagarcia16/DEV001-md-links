@@ -1,5 +1,7 @@
 const chalk = require('chalk');
 const figlet = require('figlet');
+const fetch = require('node-fetch');
+
 
 //Muestro un banner : md_links al ejecutar con node api.js
 console.log(
@@ -19,24 +21,17 @@ const pathSlash2 = '.\\README.md'
 const newPath2 = pathSlash2.replace(/\\\//g, ".") 
 console.log(newPath2)
 
-//---------------------------PASO I: Ruta absoluta , ¿existe path?---------------------------------
+//----------------------------------------------------------------
 
-/*I.¿LA RUTA ES ABSOLUTA?.- en la función isAbsolute uso el operador ternario cuya condición es path.isAbsolute(p)
+/*1.¿LA RUTA ES ABSOLUTA?.- en la función isAbsolute uso el operador ternario cuya condición es path.isAbsolute(p)
  que se evalúa como true o false.Si la condición es true, el operador retorna p; de lo contrario, devuelve el valor
  convierte la ruta absoluta a relativa */
- const path = require('path');
+const path = require('path');
+//const { rejects } = require('assert');
 
  function isAbsolute(p) { return path.isAbsolute(p) ? p : path.resolve(p) }
 
-  
-  //II Verificar que el path si existe
-  const Pathexist = (path) => {
-      if (fs.existsSync(path)) {
-        return true;
-      }else {
-      return false;
-    }
-  };
+  //3 
  
  /*III. Recorrer el directorio.-En la siguiente función , getLinkMD muestro todos los 
  links que son MD
@@ -64,21 +59,21 @@ console.log(newPath2)
      return AllFilesmd
  }
  
- console.log(getLinklmd('prueba'));
+ //console.log(getLinklmd('prueba'));
 // PASO 2 :  EXTRAER LINKS
 const extractlinks = (route) => {
     const mdFiles = getLinklmd(route);
-    console.log(mdFiles)
+    
     //Creo una variable donde almacenaré el array de objetos con las 3 propiedades
     const arrayObjectmd = []
     mdFiles.forEach(file => {
-        console.log(file)
+        //console.log(file)
         readmdFiles = fs.readFileSync(file, 'utf8') //readFileSync se utiliza para leer el archivo y devolver su contenido,La codificación predeterminada es utf8
             console.log(readmdFiles)
 
         const regexMdLinks = /\[([^\[]+)\](\(.*\))/gm
         const matches = readmdFiles.match(regexMdLinks)
-             console.log('links', matches)
+             //console.log('links', matches)
         const singleMatch = /\[([^\[]+)\]\((.*)\)/
         for (let i = 0; i < matches.length; i++) {
             let md = singleMatch.exec(matches[i]) //El método exec() ejecuta una busqueda sobre las coincidencias de una expresión regular en una cadena especifica. Devuelve el resultado como array, o null
@@ -93,9 +88,8 @@ const extractlinks = (route) => {
     })
     return arrayObjectmd
 }
-  console.log(extractlinks('prueba'))
+  //console.log(extractlinks('prueba'))
 // FUNCIÓN VALIDATE---
-  const fetch = require('node-fetch');
 
 const validateLink = (route) => {
         //1.crear un nuevo array y añadir los nuevos status y messager
@@ -127,13 +121,7 @@ const validateLink = (route) => {
         })
         return Promise.all(promiseFetch);
     }
-    console.log(validateLink([{
-        href: 'https://comidasperuanas.net/wp-content/uploads/2020/12/Aguajina.webp',
-        text: 'aguajina',
-        file: 'C:\\laboratoria Danica\\DEV001-md-links\\prueba\\prueba2\\refrescos.md',
-        status: 200,
-        message: 'ok'
-      }]));
+    validateLink('./prueba/prueba2/refrescos.md').then(res=>console.log('promesa',res));
     /*const validateLink = (route) => {
         const promiseFetch = route.map((link) => {
          return fetch(link.href)
@@ -163,12 +151,12 @@ const validateLink = (route) => {
       console.log(validateLink('prueba'))*/
   
 //-------------------------------------PASO 4:CASO --stats----------------------------------------------
-/*//Crear una función 
+//Crear una función 
 //1.-Crear un función donde para stats cuyos parámetros son el arreglo de links 
-const statsLinks = (arrayLinks) => {
+const statsLinks = (array) => {
     // const link = extractlinks(arr);
     //2.-Uso map() para obtener el heref  y lo guardo en hreflink  
-    const hreflink = arrayLinks.map(link => {
+    const hreflink = array.map(link => {
             return link.href
         })
         //3.-en la variable TOTAL guardo guardo el calculo de links totales usando length 
@@ -178,17 +166,17 @@ const statsLinks = (arrayLinks) => {
     const unique = new Set(hreflink) //permite almacenar valores únicos de cualquier tipo
         //Uso size para calcular los links unicos y lo guardo en la variable uniques 
     const uniques = unique.size
-        aconsole.log(uniques)
+        console.log(uniques)
     return `Total: ${chalk.yellow(total)} \nUnique: ${chalk.blue(uniques)}`;
 }
-console.log(statsLinks('prueba'))*/
+//console.log(statsLinks('prueba'))*/
 
 module.exports = {
     isAbsolute,
     getLinklmd,
     extractlinks,
     validateLink,
+    statsLinks,
     newPath1,
     newPath2,
-    //statsLinks,
 };
