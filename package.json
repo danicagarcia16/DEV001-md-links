@@ -28,6 +28,9 @@
   ],
   "author": "Danica García Guerreo",
   "license": "ISC",
+  "bin": {
+    "md-links": "cli.js"
+  },
   "bugs": {
     "url": "https://github.com/danicagarcia16/DEV001-md-links/issues"
   },

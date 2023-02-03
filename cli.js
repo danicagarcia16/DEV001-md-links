@@ -16,7 +16,7 @@ const { statsLinks } = require('./api.js');
 // console.log(m)
 //Aquí capturamos el path
 const route = process.argv[2];
-// console.log(route)
+
 //Aquí capturo opciones--- usar slice para sacar parte del array
 const opcion = process.argv[3]
 const opciones = process.argv.slice(3)
